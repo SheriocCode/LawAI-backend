@@ -5,7 +5,7 @@ from qcloud_cos import CosConfig, CosS3Client
 from config import OssConfig
 
 # 配置项
-UPLOAD_FOLDER = 'uploads'
+UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx', 'png', 'jpg', 'jpeg'}
 
 if not os.path.exists(UPLOAD_FOLDER):

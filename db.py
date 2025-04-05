@@ -4,6 +4,7 @@ import traceback
 from extension import db
 from model.ai import ApiSession, Question, WebSearchResult, RAGResult, Session
 from model.user import User
+from model.law import JudicalCase, JudgmentDocument
 from model.uploads import UploadFile, UploadPic
 
 """注册用户"""
@@ -163,3 +164,55 @@ def add_pic_file(user_id, pic_name, pic_url, ocr_msg):
         current_app.logger.error(f"Error adding file: {e}")
         current_app.logger.error(traceback.format_exc())
         return False, str(e)
+
+# 根据id获取法院案例具体信息
+def get_judicial_case_by_id(id):
+    judicial_case = JudicalCase.query.get(id)
+    if judicial_case:
+        return True, judicial_case
+    else:
+        return False, "Judicial case not found"
+
+# 根据id获取裁判文书具体信息
+def get_judgment_document_by_id(id):
+    judgment_document = JudgmentDocument.query.get(id)
+    if judgment_document:
+        return True, judgment_document
+    else:
+        return False, "Judgment document not found"
+    
+# 法律法规页面
+def get_legal_rules_board():
+    pass
+
+
+# 司法案例页面-获取指导性案例
+def get_judicial_direction_cases_board():
+    # 获取关键词中包含 “刑事” 且 title中包含 “指导” 的案例 前10个
+    criminal_direction_cases = JudicalCase.query.filter(JudicalCase.keywords.like('%刑事%'), JudicalCase.title.like('%指导%')).limit(10).all()
+    # 获取关键词中包含 “民事” 且 title中包含 “指导” 的案例
+    civil_direction_cases = JudicalCase.query.filter(JudicalCase.keywords.like('%民事%'), JudicalCase.title.like('%指导%')).limit(10).all()
+    # 获取关键词中包含 “行政” 且 title中包含 “指导” 的案例
+    administrative_direction_cases = JudicalCase.query.filter(JudicalCase.keywords.like('%行政%'), JudicalCase.title.like('%指导%')).limit(10).all()
+    # 获取关键词中包含 “赔偿” 且 title中包含 “指导” 的案例
+    compensation_direction_cases = JudicalCase.query.filter(JudicalCase.keywords.like('%赔偿%'), JudicalCase.title.like('%指导%')).limit(10).all()
+    # 获取关键词中包含 “执行” 且 title中包含 “指导” 的案例
+    execution_direction_cases = JudicalCase.query.filter(JudicalCase.keywords.like('%执行%'), JudicalCase.title.like('%指导%')).limit(10).all()
+
+    return True, criminal_direction_cases, civil_direction_cases, administrative_direction_cases, compensation_direction_cases, execution_direction_cases
+
+# 司法案例页面-获取参考性案例
+def get_judicial_reference_cases_board():
+    # 获取关键词中包含 “刑事” 且 title中不包含 “指导” 的案例 前10个
+    criminal_reference_cases = JudicalCase.query.filter(JudicalCase.keywords.like('%刑事%'), JudicalCase.title.notlike('%指导%')).limit(10).all()
+    # 获取关键词中包含 “民事” 且 title中不包含 “指导” 的案例
+    civil_reference_cases = JudicalCase.query.filter(JudicalCase.keywords.like('%民事%'), JudicalCase.title.notlike('%指导%')).limit(10).all()
+    # 获取关键词中包含 “行政” 且 title中不包含 “指导” 的案例
+    administrative_reference_cases = JudicalCase.query.filter(JudicalCase.keywords.like('%行政%'), JudicalCase.title.notlike('%指导%')).limit(10).all()
+    # 获取关键词中包含 “赔偿” 且 title中不包含 “指导” 的案例
+    compensation_reference_cases = JudicalCase.query.filter(JudicalCase.keywords.like('%赔偿%'), JudicalCase.title.notlike('%指导%')).limit(10).all()
+    # 获取关键词中包含 “执行” 且 title中不包含 “指导” 的案例
+    execution_reference_cases = JudicalCase.query.filter(JudicalCase.keywords.like('%执行%'), JudicalCase.title.notlike('%指导%')).limit(10).all()
+
+    return True, criminal_reference_cases, civil_reference_cases, administrative_reference_cases, compensation_reference_cases, execution_reference_cases
+

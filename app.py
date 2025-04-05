@@ -6,6 +6,7 @@ from utils.db import init_db, cors
 
 from routes.user_routes import user_bp
 from routes.ai_routes import ai_bp
+from routes.law_routes import law_bp
 
 
 if __name__ == "__main__":
@@ -19,5 +20,6 @@ if __name__ == "__main__":
     # 注册蓝图 
     app.register_blueprint(user_bp)
     app.register_blueprint(ai_bp)
+    app.register_blueprint(law_bp)
 
     app.run(debug=True)

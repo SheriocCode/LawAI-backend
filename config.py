@@ -33,7 +33,7 @@ class ApiKeyConfig:
 class PromptConfig:
     # 关键词提取配置
     KEYWORD_EXTRACTION_PROMPT = """
-    请判断用户问题与中学数学知识点是否相关。如果是，请提取与问题相关的联网搜索关键词。
+    请判断用户问题与知识点是否相关。如果是，请提取与问题相关的联网搜索关键词。
     如果问题与数学无关，请返回空关键词列表。
     严格按照输出格式：{"related": true/false, "keywords": ["关键词1", "关键词2"]}。"""
 
