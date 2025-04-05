@@ -56,6 +56,33 @@ def add_question_to_session(session_id, content):
         db.session.rollback()
         return False, str(e)
 
+# 获取用户信息
+def get_user_by_id(user_id):
+    user = User.query.filter_by(id=user_id).first()
+    return True, user
+
+# 修改用户信息
+def update_user_info(user_id, username, avatar, password, signature, gender):
+    user = User.query.filter_by(id=user_id).first()
+    # 更新用户信息
+    if username is not None:
+        user.username = username
+    if avatar is not None:
+        user.avatar = avatar
+    if password is not None:
+        user.password = password  # 注意：实际应用中密码应加密存储
+    if signature is not None:
+        user.signature = signature
+    if gender is not None:
+        user.gender = gender
+    try:
+        db.session.commit()
+        return True, user
+    except Exception as e:
+        db.session.rollback()
+        return False, str(e)
+
+
 
 def add_question_answer(question_id, answer):
     question = Question.query.filter_by(id=question_id).first()
@@ -216,3 +243,25 @@ def get_judicial_reference_cases_board():
 
     return True, criminal_reference_cases, civil_reference_cases, administrative_reference_cases, compensation_reference_cases, execution_reference_cases
 
+
+# 裁判文书页面-获取count
+def get_judgement_count():
+    count = JudgmentDocument.query.count()
+    return True, count
+
+# 裁判文书页面
+def get_judgement_docs_board():
+    # 获取关键词中包含 “刑事” 的判决书 前15个
+    criminal_judgement_docs = JudgmentDocument.query.filter(JudgmentDocument.document_type.like('%刑事%')).limit(15).all()
+    # 获取关键词中包含 “民事” 的判决书
+    civil_judgement_docs = JudgmentDocument.query.filter(JudgmentDocument.document_type.like('%民事%')).limit(15).all()
+    # 获取关键词中包含 “行政” 的判决书
+    administrative_judgement_docs = JudgmentDocument.query.filter(JudgmentDocument.document_type.like('%行政%')).limit(15).all()
+    # TODO: 获取其他类型判决书
+
+    return True, criminal_judgement_docs, civil_judgement_docs, administrative_judgement_docs
+
+# 案例文书推荐
+def get_docs_recommend():
+    # TODO： 基于用户行为获取案例文书推荐
+    pass

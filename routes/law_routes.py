@@ -2,6 +2,8 @@ from flask import Blueprint, request
 from utils.result import error_response, success_response
 from utils.jwt import generate_token, token_required
 from db import get_judicial_case_by_id, get_judgment_document_by_id, get_legal_rules_board, get_judicial_direction_cases_board, get_judicial_reference_cases_board
+from db import get_judgement_count, get_judgement_docs_board
+from db import get_docs_recommend
 
 from extension import console
 
@@ -105,6 +107,7 @@ def get_related_judgment():
 
 # 获取用户个性化推荐
 @law_bp.route('/interest', methods=['GET'])
+@token_required
 def interest():
     # TODO
     # 基于用户画像进行相关推荐
@@ -177,4 +180,70 @@ def judicial_cases_board():
     }
         
     return success_response(res)
+
+
+# 裁判文书页面
+@law_bp.route('/judgement_docs', methods=['GET'])
+def judgement_docs_board():
+    # 获取裁判文书总数量
+    success, judgement_count = get_judgement_count()
+    # 获取裁判文书数据
+    success, criminal_judgement_docs, civil_judgement_docs, administrative_judgement_docs = get_judgement_docs_board()
+
+    # 定义map数据
+    categories = [
+        {"title": "刑事", "judgement_docs": criminal_judgement_docs},
+        {"title": "民事", "judgement_docs": civil_judgement_docs},
+        {"title": "行政", "judgement_docs": administrative_judgement_docs}
+    ]
+
+    # 使用 map 函数动态生成 judgement_docs_board
+    def create_board(category, index):
+        return {
+            "index": index + 1, 
+            "title": category["title"],
+            "count": len(category["judgement_docs"]),
+            "items": [
+                {
+                    "index": idx,
+                    "doc_id": doc.id,
+                    "title": doc.title,
+                    "cause": doc.cause.split('、') if doc.cause else [],
+                    "trial_procedure": doc.trial_procedure,
+                    "judgment_date": doc.judgment_date,
+                    "doc_type": "JUDGMENT_DOCS"
+                } for idx, doc in enumerate(category["judgement_docs"])
+            ]
+        }
+
+    # 生成 judgement_docs_board
+    judgement_docs_board = list(map(lambda category, index: create_board(category, index), categories, range(len(categories))))
+
+    # 构建最终结果
+    res = {
+        "data_board": {
+            "judgement_count": judgement_count,
+            "word_panel": {
+                "xingshi": ['非法占有', '自首', '罚金', '减轻处罚', '交通事故', '从犯', '共同犯罪', '拘役', '故意犯', '管制', '交通肇事', '违法所得', '没收', '附带民事诉讼', '偶犯', '犯罪未遂', '主要责任', '财产权', '鉴定', '误工费', '人身权利', '人身损害赔偿', '扣押', '传唤', '立功', '返还', '程序合法', '合法财产', '伪造', '聚众', '所有权', '赔偿责任', '共同故意', '胁迫', '过失'],
+                "minshi": ['合同', '利息', '利率', '合同约定', '违约金', '民间借贷', '强制性规定', '贷款', '返还', '驳回', '清偿', '借款合同', '交通事故', '担保', '违约责任', '鉴 定', '给付', '交付', '人身损害赔偿', '误工费', '保证', '传票', '买卖合同', '债权', '传唤'],
+                # TODO: 行政关键词
+                "xingzheng": [
+                "XXX"
+                ]
+            }
+        },
+        "judgement_docs_board": judgement_docs_board
+    }
+
+    return success_response(res)
+
+
+# 获取案例文书推荐
+@law_bp.route('/docs_recommend', methods=['GET'])
+@token_required
+def docs_recommend():
+    # TODO： 基于用户行为获取案例文书推荐
+    get_docs_recommend()
+    pass
+
 
