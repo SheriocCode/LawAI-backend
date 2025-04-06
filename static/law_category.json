@@ -1,0 +1,499 @@
+{
+    "name": "中国现行有效法律",
+    "children": [
+      {
+        "name": "宪法及宪法相关法",
+        "children": [
+          {
+            "name": "宪法与基本制度",
+            "children": [
+              {"name": "中华人民共和国宪法", "value": 1},
+              {"name": "宪法修正案", "value": 5},
+              {"name": "民族区域自治法", "value": 1},
+              {"name": "香港特别行政区基本法", "value": 1},
+              {"name": "澳门特别行政区基本法", "value": 1}
+            ]
+          },
+          {
+            "name": "国家机构组织法",
+            "children": [
+              {"name": "地方各级人民代表大会和地方各级人民政府组织法", "value": 1},
+              {"name": "全国人民代表大会组织法", "value": 1},
+              {"name": "国务院组织法", "value": 1},
+              {"name": "人民法院组织法", "value": 1},
+              {"name": "人民检察院组织法", "value": 1}
+            ]
+          },
+          {
+            "name": "选举与代表制度",
+            "children": [
+              {"name": "全国人民代表大会和地方各级人民代表大会选举法", "value": 1},
+              {"name": "中国人民解放军选举全国人民代表大会和县级以上地方各级人民代表大会代表的办法", "value": 1},
+              {"name": "全国人民代表大会和地方各级人民代表大会代表法", "value": 1}
+            ]
+          },
+          {
+            "name": "国家治理与监督",
+            "children": [
+              {"name": "各级人民代表大会常务委员会监督法", "value": 1},
+              {"name": "立法法", "value": 1},
+              {"name": "国家赔偿法", "value": 1},
+              {"name": "反分裂国家法", "value": 1}
+            ]
+          },
+          {
+            "name": "其他",
+            "children": [
+              {"name": "国籍法", "value": 1},
+              {"name": "领海及毗连区法", "value": 1},
+              {"name": "专属经济区和大陆架法", "value": 1},
+              {"name": "国旗法", "value": 1},
+              {"name": "国徽法", "value": 1},
+              {"name": "香港特别行政区驻军法", "value": 1},
+              {"name": "澳门特别行政区驻军法", "value": 1},
+              {"name": "村民委员会组织法", "value": 1},
+              {"name": "城市居民委员会组织法", "value": 1},
+              {"name": "法官法", "value": 1},
+              {"name": "检察官法", "value": 1},
+              {"name": "戒严法", "value": 1},
+              {"name": "外国中央银行财产司法强制措施豁免法", "value": 1}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "民法商法",
+        "children": [
+          {
+            "name": "基本法",
+            "children": [
+              {"name": "民法通则", "value": 1},
+              {"name": "物权法", "value": 1},
+              {"name": "合同法", "value": 1},
+              {"name": "侵权责任法", "value": 1},
+              {"name": "涉外民事关系法律适用法", "value": 1}
+            ]
+          },
+          {
+            "name": "婚姻家庭与继承",
+            "children": [
+              {"name": "婚姻法", "value": 1},
+              {"name": "继承法", "value": 1},
+              {"name": "收养法", "value": 1}
+            ]
+          },
+          {
+            "name": "公司与企业",
+            "children": [
+              {"name": "公司法", "value": 1},
+              {"name": "合伙企业法", "value": 1},
+              {"name": "个人独资企业法", "value": 1},
+              {"name": "农民专业合作社法", "value": 1},
+              {"name": "企业破产法", "value": 1}
+            ]
+          },
+          {
+            "name": "知识产权",
+            "children": [
+              {"name": "著作权法", "value": 1},
+              {"name": "商标法", "value": 1},
+              {"name": "专利法", "value": 1}
+            ]
+          },
+          {
+            "name": "经济合同与交易",
+            "children": [
+              {"name": "招标投标法", "value": 1},
+              {"name": "拍卖法", "value": 1},
+              {"name": "证券法", "value": 1},
+              {"name": "信托法", "value": 1},
+              {"name": "电子签名法", "value": 1}
+            ]
+          },
+          {
+            "name": "其他",
+            "children": [
+              {"name": "中外合资经营企业法", "value": 1},
+              {"name": "外资企业法", "value": 1},
+              {"name": "中外合作经营企业法", "value": 1},
+              {"name": "全民所有制工业企业法", "value": 1},
+              {"name": "海商法", "value": 1},
+              {"name": "保险法", "value": 1},
+              {"name": "票据法", "value": 1},
+              {"name": "担保法", "value": 1},
+              {"name": "商业银行法", "value": 1},
+              {"name": "证券投资基金法", "value": 1},
+              {"name": "农村土地承包法", "value": 1}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "行政法",
+        "children": [
+          {
+            "name": "行政管理与监督",
+            "children": [
+              {"name": "行政处罚法", "value": 1},
+              {"name": "行政许可法", "value": 1},
+              {"name": "行政强制法", "value": 1},
+              {"name": "行政监察法", "value": 1},
+              {"name": "行政复议法", "value": 1}
+            ]
+          },
+          {
+            "name": "环境保护与资源",
+            "children": [
+              {"name": "环境保护法", "value": 1},
+              {"name": "海洋环境保护法", "value": 1},
+              {"name": "水污染防治法", "value": 1},
+              {"name": "大气污染防治法", "value": 1},
+              {"name": "固体废物污染环境防治法", "value": 1},
+              {"name": "环境噪声污染防治法", "value": 1},
+              {"name": "环境影响评价法", "value": 1}
+            ]
+          },
+          {
+            "name": "社会管理与服务",
+            "children": [
+              {"name": "教育法", "value": 1},
+              {"name": "教师法", "value": 1},
+              {"name": "义务教育法", "value": 1},
+              {"name": "高等教育法", "value": 1},
+              {"name": "职业教育法", "value": 1},
+              {"name": "科学技术进步法", "value": 1},
+              {"name":  "促进科技成果转化法", "value": 1},
+              {"name": "人口与计划生育法", "value": 1},
+              {"name": "红十字会法", "value": 1},
+              {"name": "公益事业捐赠法", "value": 1},
+              {"name": "传染病防治法", "value": 1},
+              {"name": "执业医师法", "value": 1},
+              {"name": "食品安全法", "value": 1},
+              {"name": "药品管理法", "value": 1},
+              {"name": "母婴保健法", "value": 1},
+              {"name": "献血法", "value": 1},
+              {"name": "消防法", "value": 1},
+              {"name": "禁毒法", "value": 1},
+              {"name": "突发事件应对法", "value": 1},
+              {"name": "防震减灾法", "value": 1},
+              {"name": "气象法", "value": 1},
+              {"name": "测绘法", "value": 1},
+              {"name": "文物保护法", "value": 1},
+              {"name": "非物质文化遗产法", "value": 1},
+              {"name": "国家通用语言文字法", "value": 1}
+            ]
+          },
+          {
+            "name": "经济与市场管理",
+            "children": [
+              {"name": "价格法", "value": 1},
+              {"name": "反不正当竞争法", "value": 1},
+              {"name": "消费者权益保护法", "value": 1},
+              {"name": "广告法", "value": 1},
+              {"name": "产品质量法", "value": 1},
+              {"name": "计量法", "value": 1},
+              {"name": "标准化法", "value": 1},
+              {"name": "进出口商品检验法", "value": 1},
+              {"name": "海关法", "value": 1},
+              {"name": "邮政法", "value": 1},
+              {"name": "电信条例", "value": 1},
+              {"name": "铁路法", "value": 1},
+              {"name": "民用航空法", "value": 1},
+              {"name": "公路法", "value": 1},
+              {"name": "港口法", "value": 1},
+              {"name": "税收征收管理法", "value": 1},
+              {"name": "预算法", "value": 1},
+              {"name": "审计法", "value": 1},
+              {"name": "会计法", "value": 1},
+              {"name": "证券法", "value": 1},
+              {"name": "银行业监督管理法", "value": 1},
+              {"name": "反垄断法", "value": 1},
+              {"name": "反洗钱法", "value": 1},
+              {"name": "企业国有资产法", "value": 1},
+              {"name": "车船税法", "value": 1}
+            ]
+          },
+          {
+            "name": "国防与军事",
+            "children": [
+              {"name": "国防法", "value": 1},
+              {"name": "兵役法", "value": 1},
+              {"name": "军事设施保护法", "value": 1},
+              {"name": "国防教育法", "value": 1},
+              {"name": "预备役军官法", "value": 1},
+              {"name": "人民武装警察法", "value": 1},
+              {"name": "香港特别行政区驻军法", "value": 1},
+              {"name": "澳门特别行政区驻军法", "value": 1}
+            ]
+          },
+          {
+            "name": "其他",
+            "children": [
+              {"name": "国籍法", "value": 1},
+              {"name": "领事特权与豁免条例", "value": 1},
+              {"name": "外交特权与豁免条例", "value": 1},
+              {"name": "国家赔偿法", "value": 1},
+              {"name": "人民警察法", "value": 1},
+              {"name": "监狱法", "value": 1},
+              {"name": "律师法", "value": 1},
+              {"name": "公证法", "value": 1},
+              {"name": "居民身份证法", "value": 1},
+              {"name": "护照法", "value": 1},
+              {"name": "人民防空法", "value": 1},
+              {"name": "海岛保护法", "value": 1},
+              {"name": "国防动员法", "value": 1},
+              {"name": "驻外外交人员法", "value": 1},
+              {"name": "治安管理处罚法", "value": 1},
+              {"name": "道路交通安全法", "value": 1},
+              {"name": "职业病防治法", "value": 1},
+              {"name": "安全生产法", "value": 1},
+              {"name": "野生动物保护法", "value": 1},
+              {"name": "水土保持法", "value": 1},
+              {"name": "进出境动植物检疫法", "value": 1},
+              {"name": "森林法", "value": 1},
+              {"name": "草原法", "value": 1},
+              {"name": "渔业法", "value": 1},
+              {"name": "矿产资源法", "value": 1},
+              {"name": "土地管理法", "value": 1},
+              {"name": "城市房地产管理法", "value": 1},
+              {"name": "档案法", "value": 1},
+              {"name": "保守国家秘密法", "value": 1},
+              {"name": "归侨侨眷权益保护法", "value": 1},
+              {"name": "人民警察警衔条例", "value": 1},
+              {"name": "海关关衔条例", "value": 1},
+              {"name": "国务院组织法", "value": 1},
+              {"name": "全国人民代表大会和地方各级人民代表大会选举法", "value": 1},
+              {"name": "全国人民代表大会常务委员会议事规则", "value": 1},
+              {"name": "全国人民代表大会议事规则", "value": 1},
+              {"name": "全国人民代表大会和地方各级人民代表大会代表法", "value": 1},
+              {"name": "全国人民代表大会常务委员会关于批准《国务院关于安置老弱病残干部的暂行办法》的决议", "value": 1},
+              {"name": "全国人民代表大会常务委员会批准《国务院关于劳动教养问题的决定》的决议", "value": 1},
+              {"name": "全国人民代表大会常务委员会批准《国务院关于劳动教养的补充规定》的决议", "value": 1},
+              {"name": "全国人民代表大会常务委员会关于批准《国务院关于老干部离职休养的暂行规定》的决议", "value": 1},
+              {"name": "全国人民代表大会常务委员会关于对中华人民共和国缔结或者参加的国际条约所规定的罪行行使刑事管辖权的决定", "value": 1},
+              {"name": "全国人民代表大会常务委员会关于县级以下人民代表大会代表直接选举的若干规定", "value": 1},
+              {"name": "全国人民代表大会常务委员会关于在沿海港口城市设立海事法院的决定", "value": 1},
+              {"name": "全国人民代表大会常务委员会关于授予军队离休干部中国人民解放军功勋荣誉章的规定", "value": 1}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "经济法",
+        "children": [
+          {
+            "name": "财政税收",
+            "children": [
+              {"name": "个人所得税法", "value": 1},
+              {"name": "企业所得税法", "value": 1},
+              {"name": "税收征收管理法", "value": 1},
+              {"name": "预算法", "value": 1},
+              {"name": "审计法", "value": 1},
+              {"name": "车船税法", "value": 1}
+            ]
+          },
+          {
+            "name": "金融与证券",
+            "children": [
+              {"name": "中国人民银行法", "value": 1},
+              {"name": "商业银行法", "value": 1},
+              {"name": "证券法", "value": 1},
+              {"name": "证券投资基金法", "value": 1},
+              {"name": "保险法", "value": 1},
+              {"name": "反洗钱法", "value": 1}
+            ]
+          },
+          {
+            "name": "市场与竞争",
+            "children": [
+              {"name": "反不正当竞争法", "value": 1},
+              {"name": "反垄断法", "value": 1},
+              {"name": "消费者权益保护法", "value": 1},
+              {"name": "广告法", "value": 1},
+              {"name": "产品质量法", "value": 1},
+              {"name": "计量法", "value": 1},
+              {"name": "标准化法", "value": 1},
+              {"name": "商标法", "value": 1},
+              {"name": "专利法", "value": 1}
+            ]
+          },
+          {
+            "name": "资源与环境",
+            "children": [
+              {"name": "森林法", "value": 1},
+              {"name": "草原法", "value": 1},
+              {"name": "渔业法", "value": 1},
+              {"name": "矿产资源法", "value": 1},
+              {"name": "土地管理法", "value": 1},
+              {"name": "水法", "value": 1},
+              {"name": "水土保持法", "value": 1},
+              {"name": "节约能源法", "value": 1},
+              {"name": "可再生能源法", "value": 1},
+              {"name": "循环经济促进法", "value": 1},
+              {"name": "清洁生产促进法", "value": 1},
+              {"name": "海域使用管理法", "value": 1},
+              {"name": "海岛保护法", "value": 1}
+            ]
+          },
+          {
+            "name": "经济管理与监督",
+            "children": [
+              {"name": "统计法", "value": 1},
+              {"name": "会计法", "value": 1},
+              {"name": "注册会计师法", "value": 1},
+              {"name": "企业国有资产法", "value": 1},
+              {"name": "企业破产法", "value": 1},
+              {"name": "农民专业合作社法", "value": 1},
+              {"name": "中小企业促进法", "value": 1},
+              {"name": "银行业监督管理法", "value": 1},
+              {"name": "价格法", "value": 1},
+              {"name": "招标投标法", "value": 1},
+              {"name": "电子签名法", "value": 1},
+              {"name": "合同法", "value": 1}
+            ]
+          },
+          {
+            "name": "其他",
+            "children": [
+              {"name": "全民所有制工业企业法", "value": 1},
+              {"name": "乡镇企业法", "value": 1},
+              {"name": "港口法", "value": 1},
+              {"name": "公路法", "value": 1},
+              {"name": "铁路法", "value": 1},
+              {"name": "民用航空法", "value": 1},
+              {"name": "邮政法", "value": 1},
+              {"name": "电信条例", "value": 1},
+              {"name": "海关法", "value": 1},
+              {"name": "进出口商品检验法", "value": 1},
+              {"name": "进出境动植物检疫法", "value": 1},
+              {"name": "烟草专卖法", "value": 1},
+              {"name": "防沙治沙法", "value": 1},
+              {"name": "农业法", "value": 1},
+              {"name": "农业技术推广法", "value": 1},
+              {"name": "畜牧法", "value": 1},
+              {"name": "农产品质量安全法", "value": 1},
+              {"name": "种子法", "value": 1},
+              {"name": "渔业法", "value": 1},
+              {"name": "矿产资源法", "value": 1},
+              {"name": "土地管理法", "value": 1},
+              {"name": "城市房地产管理法", "value": 1},
+              {"name": "水法", "value": 1},
+              {"name": "标准化法", "value": 1},
+              {"name": "计量法", "value": 1},
+              {"name": "产品质量法", "value": 1},
+              {"name": "反不正当竞争法", "value": 1},
+              {"name": "消费者权益保护法", "value": 1},
+              {"name": "广告法", "value": 1},
+              {"name": "商标法", "value": 1},
+              {"name": "专利法", "value": 1},
+              {"name": "合同法", "value": 1},
+              {"name": "担保法", "value": 1},
+              {"name": "票据法", "value": 1},
+              {"name": "保险法", "value": 1},
+              {"name": "证券法", "value": 1},
+              {"name": "信托法", "value": 1},
+              {"name": "拍卖法", "value": 1},
+              {"name": "招标投标法", "value": 1},
+              {"name": "电子签名法", "value": 1},
+              {"name": "企业破产法", "value": 1},
+              {"name": "农民专业合作社法", "value": 1},
+              {"name": "物权法", "value": 1},
+              {"name": "侵权责任法", "value": 1},
+              {"name": "涉外民事关系法律适用法", "value": 1}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "社会法",
+        "children": [
+          {
+            "name": "劳动与就业",
+            "children": [
+              {"name": "劳动法", "value": 1},
+              {"name": "劳动合同法", "value": 1},
+              {"name": "就业促进法", "value": 1},
+              {"name": "劳动争议调解仲裁法", "value": 1},
+              {"name": "职业病防治法", "value": 1},
+              {"name": "安全生产法", "value": 1},
+              {"name": "矿山安全法", "value": 1},
+              {"name": "工会法", "value": 1}
+            ]
+          },
+          {
+            "name": "社会保障",
+            "children": [
+              {"name": "社会保险法", "value": 1},
+              {"name": "军人保险法", "value": 1},
+              {"name": "老年人权益保障法", "value": 1},
+              {"name": "残疾人保障法", "value": 1}
+            ]
+          },
+          {
+            "name": "社会福利与保护",
+            "children": [
+              {"name": "未成年人保护法", "value": 1},
+              {"name": "预防未成年人犯罪法", "value": 1},
+              {"name": "妇女权益保障法", "value": 1},
+              {"name": "精神卫生法", "value": 1}
+            ]
+          },
+          {
+            "name": "其他",
+            "children": [
+              {"name": "归侨侨眷权益保护法", "value": 1},
+              {"name": "红十字会法", "value": 1},
+              {"name": "公益事业捐赠法", "value": 1}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "刑法",
+        "children": [
+          {
+            "name": "刑法及相关修正案",
+            "children": [
+              {"name": "中华人民共和国刑法", "value": 1},
+              {"name": "全国人民代表大会常务委员会关于惩治骗购外汇、逃汇和非法买卖外汇犯罪的决定", "value": 1},
+              {"name": "中华人民共和国刑法修正案", "value": 10}
+            ]
+          }
+        ]
+      },
+      {
+        "name": "诉讼与非诉讼程序法",
+        "children": [
+          {
+            "name": "刑事诉讼",
+            "children": [
+              {"name": "刑事诉讼法", "value": 1},
+              {"name": "关于对中华人民共和国缔结或者参加的国际条约所规定的罪行行使刑事管辖权的决定", "value": 1}
+            ]
+          },
+          {
+            "name": "民事诉讼",
+            "children": [
+              {"name": "民事诉讼法", "value": 1},
+              {"name": "仲裁法", "value": 1},
+              {"name": "农村土地承包经营纠纷调解仲裁法", "value": 1},
+              {"name": "人民调解法", "value": 1}
+            ]
+          },
+          {
+            "name": "行政诉讼",
+            "children": [
+              {"name": "行政诉讼法", "value": 1}
+            ]
+          },
+          {
+            "name": "其他",
+            "children": [
+              {"name": "海事诉讼特别程序法", "value": 1},
+              {"name": "引渡法", "value": 1}
+            ]
+          }
+        ]
+      }
+    ]
+  }
