@@ -4,6 +4,7 @@ from utils.jwt import generate_token, token_required
 from db import get_judicial_case_by_id, get_judgment_document_by_id, get_legal_rules_board, get_judicial_direction_cases_board, get_judicial_reference_cases_board
 from db import get_judgement_count, get_judgement_docs_board
 from db import get_docs_recommend
+from db import get_collect_dashboard, get_collect_laws, get_collect_cases, get_collect_docs
 
 from extension import console
 
@@ -247,3 +248,52 @@ def docs_recommend():
     pass
 
 
+# 获取用户收藏统计
+@law_bp.route('/collect/dashboard', methods=['GET'])
+@token_required
+def collect_dashboard():
+    user_id = request.user_id
+    success, collect_laws_count, sum_case_doc_count = get_collect_dashboard(user_id)
+    
+    res = {
+        'law_collect': collect_laws_count,
+        'case_doc_collect': sum_case_doc_count
+    }
+    return success_response(res)
+
+# 获取用户收藏-法律文书收藏
+@law_bp.route('/collect/law_collect', methods=['GET'])
+@token_required
+def collect_law_collect():
+    user_id = request.user_id
+    success, collect_list, collect_laws_count = get_collect_laws(user_id)
+    res = {
+        'count': collect_laws_count,
+        'collect_list': collect_list
+    }
+    return success_response(res)
+
+
+# 获取用户收藏-案例收藏
+@law_bp.route('/collect/case_collect', methods=['GET'])
+@token_required
+def collect_case_collect():
+    user_id = request.user_id
+    success, collect_list, collect_cases_count = get_collect_cases(user_id)
+    res = {
+        'count': collect_cases_count,
+        'collect_list': collect_list
+    }
+    return success_response(res)
+
+# 获取用户收藏-文书收藏
+@law_bp.route('/collect/doc_collect', methods=['GET'])
+@token_required
+def collect_doc_collect():
+    user_id = request.user_id
+    success, collect_list, collect_docs_count = get_collect_docs(user_id)
+    res = {
+        'count': collect_docs_count,
+        'collect_list': collect_list
+    }
+    return success_response(res)

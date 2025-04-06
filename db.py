@@ -3,7 +3,7 @@ from flask import current_app
 import traceback
 from extension import db
 from model.ai import ApiSession, Question, WebSearchResult, RAGResult, Session
-from model.user import User
+from model.user import User, Collect
 from model.law import JudicalCase, JudgmentDocument
 from model.uploads import UploadFile, UploadPic
 
@@ -265,3 +265,79 @@ def get_judgement_docs_board():
 def get_docs_recommend():
     # TODO： 基于用户行为获取案例文书推荐
     pass
+
+# 获取用户收藏统计
+def get_collect_dashboard(user_id):
+    # 获取用户收藏法律文书统计
+    collect_laws_count = Collect.query.filter_by(user_id=user_id, doc_type='LAWS').count()
+
+    # 获取用户收藏案例统计
+    collect_case_count = Collect.query.filter_by(user_id=user_id, doc_type='JUDICIAL_CASES').count()
+    
+    # 获取用户收藏的判决书统计
+    collect_doc_count = Collect.query.filter_by(user_id=user_id, doc_type='JUDGMENT_DOCS').count()
+
+    # 案例文书统计
+    sum_case_doc_count = collect_case_count + collect_doc_count
+
+    return True, collect_laws_count, sum_case_doc_count
+
+# 获取用户收藏-法律文书收藏
+def get_collect_laws(user_id):
+    collect_laws_count = Collect.query.filter_by(user_id=user_id, doc_type='LAWS').count()
+    collect_laws = Collect.query.filter_by(user_id=user_id, doc_type='LAWS').limit(10).all()
+
+    collect_list = []
+    # 获取对应的法律文书
+    for idx, collect_law in enumerate(collect_laws):
+        law = JudicalCase.query.get(collect_law.doc_id)
+        collect_list.append({
+            "doc_id": law.id,
+            "index": idx,
+            "title": law.title,
+            "law_category": law.category,
+            "doc_type": "LAWS",
+            "collect_date": collect_law.collect_date.strftime("%Y-%m-%d")
+        })
+
+    return True, collect_list, collect_laws_count
+
+# 获取用户收藏-案例
+def get_collect_cases(user_id):
+    collect_cases_count = Collect.query.filter_by(user_id=user_id, doc_type='JUDICIAL_CASES').count()
+    collect_cases = Collect.query.filter_by(user_id=user_id, doc_type='JUDICIAL_CASES').limit(10).all()
+
+    collect_list = []
+    # 获取对应的法律文书
+    for idx, collect_case in enumerate(collect_cases):
+        case = JudicalCase.query.get(collect_case.doc_id)
+        collect_list.append({
+            "doc_id": case.id,
+            "index": idx,
+            "title": case.title,
+            "keywords": case.keywords.split(' '),
+            "doc_type": "JUDICIAL_CASES",
+            "collect_date": collect_case.collect_date.strftime("%Y-%m-%d")
+        })
+
+    return True, collect_list, collect_cases_count
+
+# 获取用户收藏-裁判文书
+def get_collect_docs(user_id):
+    collect_docs_count = Collect.query.filter_by(user_id=user_id, doc_type='JUDGMENT_DOCS').count()
+    collect_docs = Collect.query.filter_by(user_id=user_id, doc_type='JUDGMENT_DOCS').limit(10).all()
+
+    collect_list = []
+    # 获取对应的法律文书
+    for idx, collect_doc in enumerate(collect_docs):
+        doc = JudgmentDocument.query.get(collect_doc.doc_id)
+        collect_list.append({
+            "doc_id": doc.id,
+            "index": idx,
+            "title": doc.title,
+            "cause": doc.cause.split('、') if doc.cause else [],
+            "doc_type": "JUDGMENT_DOCS",
+            "collect_date": collect_doc.collect_date.strftime("%Y-%m-%d")
+        })
+
+    return True, collect_list, collect_docs_count
