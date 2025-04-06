@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+import json
 from utils.result import error_response, success_response
 from utils.jwt import generate_token, token_required
 from db import get_judicial_case_by_id, get_judgment_document_by_id, get_legal_rules_board, get_judicial_direction_cases_board, get_judicial_reference_cases_board
@@ -297,3 +298,38 @@ def collect_doc_collect():
         'collect_list': collect_list
     }
     return success_response(res)
+
+# 图表-法典关系图
+@law_bp.route('/chart/law_relation', methods=['GET'])
+def law_relation():
+    # 读取json
+    with open('E:\Desktop\LawAI\LawAI-dataend\data\law_category.json', 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    return success_response(data)
+
+# 图标-法院地图
+@law_bp.route('/chart/court_map', methods=['GET'])
+def court_map():
+    # 读取json
+    with open('E:\Desktop\LawAI\LawAI-dataend\data\court_category.json', 'r', encoding='utf-8') as f:
+        court_data = json.load(f)
+
+    # provices_list = ['北京市', '天津市', '河北省', '山西省', '内蒙古自治区', '辽宁省', '吉林省', '黑龙江省', '上海市', '江苏省', '浙江省', '安徽省', '福建省', '江西省', '山东省', '河南省', '湖北省', '湖南省', '广东省', '广西壮族自治区', '海南省', '重庆市', '四川省', '贵州省', '云南省', '西藏自治区', '陕西省', '甘肃省', '青海省', '宁夏回族自治区', '新疆维吾尔自治区']
+    processed_data = []
+
+    # 处理数据
+    result = {}
+    for court_json in court_data:
+        for key, value in court_json.items():
+            court_province = key.split('高级人民法院')[0]
+            higher_court = key
+            medium_court_list = []
+            for medium_court in value:
+                for key, value in medium_court.items():
+                    medium_court_name = key
+                    medium_court_list.append(medium_court_name)
+            processed_data.append({
+                "court_province": court_province,
+                "higher_court": higher_court,
+                "medium_court_list": medium_court_list
+            })

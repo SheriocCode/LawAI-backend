@@ -37,3 +37,5 @@ class JudgmentDocument(db.Model):
 #     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
 #     title = db.Column(db.String(255), nullable=False)
 #     content = db.Column(db.Text, nullable=False)
+#     category = db.Column(db.Text, nullable=True) # 类别(宪法及相关法)
+
