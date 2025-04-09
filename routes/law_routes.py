@@ -1,4 +1,5 @@
 from flask import Blueprint, request
+import time
 import json
 from utils.result import error_response, success_response
 from utils.jwt import generate_token, token_required
@@ -7,9 +8,55 @@ from db import get_judgement_count, get_judgement_docs_board
 from db import get_docs_recommend
 from db import get_collect_dashboard, get_collect_laws, get_collect_cases, get_collect_docs
 
-from extension import console
+from algo.search import find_similar_cases
+
+from extension import console, model, embeddings, metadata
 
 law_bp = Blueprint('law', __name__)
+
+@law_bp.route('/search', methods=['POST'])
+def search():
+    data = request.json
+    query_str = data.get('user_input')
+    if not query_str:
+        return error_response('请输入关键词')
+    
+    # 案例搜索开始计时
+    case_search_start_time = time.time()
+
+    top_k = 20
+    results = find_similar_cases(model, embeddings, metadata, query_str, top_k)
+    
+    # 展示结果
+    for rank, (idx, score) in enumerate(results, 1):
+        print('原索引:', idx, ' 相似度:', score)
+        case_info = metadata[idx]
+        print(f"\n▌ 相似度排名 {rank} （相似度：{score:.4f}）")
+        print(f"案例标题：{case_info['案例']}")
+        print(f"核心关键词：{', '.join(case_info['关键词'])}")
+        print(f"裁判要旨：{case_info['基本案情']}")
+
+    # 结束计时
+    case_search_end_time = time.time()
+    case_search_execution_time = case_search_end_time - case_search_start_time
+    
+    res = {
+        "search_time": round(case_search_execution_time, 2),
+        "search_res": {
+            "count": len(results), 
+            "items": [ 
+                {
+                    "doc_id": int(item[0])+1,
+                    "index": idx,
+                    "title": metadata[item[0]]['案例'],
+                    "doc_type": "JUDICIAL_CASES", 
+                    "score": float(item[1]),
+                } for idx, item in enumerate(results)
+            ]
+        }
+    }
+    return success_response(res)
+
 
 # 获取id案例具体信息
 @law_bp.route('/page/judicial_case/<int:id>', methods=['GET'])
