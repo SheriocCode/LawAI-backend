@@ -1,4 +1,4 @@
-from flask import Blueprint, Response, request, current_app
+from flask import Blueprint, Response, request, current_app, stream_with_context
 import uuid
 import json
 from http import HTTPStatus
@@ -14,6 +14,7 @@ from utils.jwt import generate_token, token_required
 from utils.upload import file_uploader
 
 from db import add_pic_file, add_question_answer, add_question_summary, add_upload_file, create_apisession, create_session, add_question_to_session, get_apisession, get_question_by_id
+from db import add_web_search_result, get_retrieve_data
 
 ai_bp = Blueprint('ai', __name__)
 
@@ -205,7 +206,7 @@ def web_search():
     # 搜索结果入库
     console.print(f'[blue]@web_search - save to db [/blue]')
     # TODO: 整理搜索结果，保留关键信息
-    add_web_search_result(question_id, json.dumps(search_res))
+    add_web_search_result(question_id, str(search_res))
 
     return success_response({"type": "web_search_result", "web_search_items": search_res})
 
@@ -244,10 +245,12 @@ def stream_chat():
     console.print(f'[blue]@stream_chat - get retrieve data[/blue]')
     success, retrieve_data = get_retrieve_data(question_id)
     if success:
-        console.print(f"[green]retrieve data:[/green]")
-        console.print(f"[green]web_search_result: {retrieve_data['web_search_result'][:25]}...[/green]")
-        console.print(f"[green]rag_result: {retrieve_data['rag_result'][:25]}...[/green]")
-        console.print(f"[green]knowledge_search_result: {retrieve_data['knowledge_search_result'][:25]}...[/green]")
+        if retrieve_data['web_search_result']:
+            console.print(f"[green]retrieve data:[/green]")
+            console.print(f"[green]web_search_result: {retrieve_data['web_search_result'].content[:25]}...[/green]")
+        if retrieve_data['rag_result']:
+            console.print(f"[green]retrieve data:[/green]")
+            console.print(f"[green]rag_result: {retrieve_data['rag_result'].content[:25]}...[/green]")
     else:
         console.print(f"[red]Failed to retrieve data for question_id: {question_id}[/red]")
 
@@ -257,43 +260,32 @@ def stream_chat():
     messages.append({
         "role": "system",
         "content": """
-        你是一个智能助手，你需要参考引用内容首先进行引用内容的思考（需要给出参考的具体引用），然后对用户的问题进行回答。
+        你是智法通鉴，一个智能法律助手。
         """
     })
 
-    messages.append({
-        "role": "user",
-        "content": """
-        引用内容：{json_retrieve_data}
-        1. 问题：{user_question}
-        2. 图片ocr 识别结果：{ocr_msg}
-        """.format(user_question=user_input.get("user_question"), ocr_msg=user_input.get("ocr_msg"), json_retrieve_data=str(retrieve_data))
-    })
+    if not retrieve_data['web_search_result']:
+        messages.append({
+            "role": "user",
+            "content": """
+            请从一个法律专业者的角度详细地回答用户,问题对用户的问题给出法律上的详细指导
+            1. 用户问题：{user_question}
+            2. 图片ocr 识别结果：{ocr_msg}
+            """.format(user_question=user_input.get("user_question"), ocr_msg=user_input.get("ocr_msg"))
+        })
+    else:
+        messages.append({
+            "role": "user",
+            "content": """
+            参考联网搜索结果，请从一个法律专业者的角度详细地回答用户问题（涉及到案例的请结合搜索结果先介绍案例，不涉及搜索结果的请对用户的问题给出法律上的详细指导）。
+            联网搜索结果：{web_search_result}
+            1. 用户问题：{user_question}
+            2. 图片ocr 识别结果：{ocr_msg}
+            """.format(user_question=user_input.get("user_question"), ocr_msg=user_input.get("ocr_msg"), web_search_result=retrieve_data['web_search_result'].content)
+        })
 
 
     console.print(f'[blue]@stream_chat - start stream chat[/blue]')
-    # response = qwen_client.chat.completions.create(
-    #     model="qwen-plus",
-    #     messages=messages,
-    #     stream=True
-    # )
-    # def generate():
-    #     full_response = ""
-    #     for chunk in response:
-    #         if chunk.choices:
-    #             content = chunk.choices[0].delta.content
-    #             full_response += content
-    #             print(content, end='')
-    #             yield content
-
-    #     with app.app_context():
-    #         # 回答入库
-    #         console.print(f'\n[blue]@stream_chat - save to db(add_question_answer)[/blue]')
-    #         add_question_answer(question_id, full_response)
-
-    #         # 后台进程：对话总结
-    #         console.print(f'\n[blue]@stream_chat - start background summary[/blue]')
-    #         executor.submit(background_summary, question_id, full_response)
 
     # 获取api_session_id
     success, api_session_id = get_apisession(session_id)
@@ -302,14 +294,16 @@ def stream_chat():
         responses = Application.call(
                 api_key=ApiKeyConfig.DASHSCOPE_API_KEY, 
                 app_id=ApiKeyConfig.LONG_SESSION_AGENT_ID,
-                prompt='{user_question} {ocr_msg}'.format(user_question=user_input.get("user_question"), ocr_msg=user_input.get("ocr_msg")),
+                # prompt='{user_question} {ocr_msg}'.format(user_question=user_input.get("user_question"), ocr_msg=user_input.get("ocr_msg")),
+                messages = messages,
                 stream=True,  # 流式输出
                 incremental_output=True)  # 增量输出
     else:
         responses = Application.call(
                 api_key=ApiKeyConfig.DASHSCOPE_API_KEY, 
                 app_id=ApiKeyConfig.LONG_SESSION_AGENT_ID,
-                prompt='{user_question} {ocr_msg}'.format(user_question=user_input.get("user_question"), ocr_msg=user_input.get("ocr_msg")),
+                # prompt='{user_question} {ocr_msg}'.format(user_question=user_input.get("user_question"), ocr_msg=user_input.get("ocr_msg")),
+                messages = messages,
                 session_id = api_session_id,
                 stream=True,  # 流式输出
                 incremental_output=True)  # 增量输出
@@ -322,17 +316,16 @@ def stream_chat():
             else:
                 content = response.output.text
                 full_response += content
-                # print(content, end='')
+                print(content, end='')
                 yield content
 
-        with current_app.app_context():
-            # TODO: 结果入库
-            console.print(f'\n[blue]@stream_chat - save to db(add_question_answer)[/blue]')
-            add_question_answer(question_id, full_response)
-            api_session_id = response.output.session_id
-            create_apisession(session_id, api_session_id)
+        # TODO: 结果入库
+        console.print(f'\n[blue]@stream_chat - save to db(add_question_answer)[/blue]')
+        # add_question_answer(question_id, full_response)
+        api_session_id = response.output.session_id
+        create_apisession(session_id, api_session_id)
 
-    return Response(generate(), content_type="text/plain")
+    return Response(stream_with_context(generate()), content_type="text/plain")
 
 @ai_bp.route("/ai/recommend", methods=["POST"])
 def recommend():

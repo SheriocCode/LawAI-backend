@@ -146,6 +146,19 @@ def add_rag_result(question_id, rag_result):
 
     return True, rag_result.id
 
+def get_retrieve_data(question_id):
+    """获取检索数据"""
+    web_search_result = WebSearchResult.query.filter_by(question_id=question_id).first()
+    rag_result = RAGResult.query.filter_by(question_id=question_id).first()
+
+    res = {
+        "web_search_result": web_search_result,
+        "rag_result": rag_result
+    }
+    
+    return True, res
+
+
 def create_apisession(session_id, api_session_id=None):
     """获取或创建API会话"""
     api_session = ApiSession.query.filter_by(session_id=session_id).first()
