@@ -169,8 +169,39 @@ def interest():
 # 法律法规页面
 @law_bp.route('/legal_rules', methods=['GET'])
 def legal_rules_board():
-    # TODO: 从数据库中获取法律法规数据
-    pass
+    # 读取laws.json文件
+    with open('static/laws.json', 'r', encoding='utf-8') as file:
+        laws_data = json.load(file)
+    
+    # 构建法律法规数据
+    legal_rules_board = []
+    laws_type = []
+
+    for law in laws_data:
+        if law['folder_name'] not in laws_type:
+            laws_type.append(law['folder_name'])
+            current_folder_name = law['folder_name']
+            legal_rules_board.append({
+                "board_index": laws_type.index(current_folder_name) + 1,
+                "board_title": current_folder_name,
+                "laws": [
+                    {
+                        "doc_id": law['id'],
+                        "title": law['law_name'],
+                        "doc_type": "LEGAL_RULES"
+                    } for law in laws_data if law['folder_name'] == current_folder_name
+                ]
+            })
+
+    res = {
+        "data_board": {
+            "storage_count": 512,
+            "category_count": 32,
+            "visit_count": 1024
+        },
+        "legal_rules_board": legal_rules_board
+    }
+    return success_response(res)
 
 
 # 司法案例页面
