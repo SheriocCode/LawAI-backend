@@ -14,6 +14,7 @@ from extension import console, model, embeddings, metadata
 
 law_bp = Blueprint('law', __name__)
 
+# 首页搜索
 @law_bp.route('/search', methods=['POST'])
 def search():
     data = request.json
@@ -207,6 +208,10 @@ def legal_rules_board():
 # 司法案例页面
 @law_bp.route('/judicial_cases', methods=['GET'])
 def judicial_cases_board():
+    # 加载case_top_keywords
+    with open('static/case_top_keywords.json', 'r', encoding='utf-8') as file:
+        case_top_keywords = json.load(file)
+
     # 获取指导性案例
     success, criminal_direction_cases, civil_direction_cases, administrative_direction_cases, compensation_direction_cases, execution_direction_cases = get_judicial_direction_cases_board()
     # 获取参考性案例
@@ -248,7 +253,8 @@ def judicial_cases_board():
                         "doc_type": "JUDICIAL_CASES"
                     } for idx, case in enumerate(category["reference_cases"])
                 ]
-            }
+            },
+            "keywords_chart_data": case_top_keywords[category["title"]]
         }
 
     # 生成 judicial_cases_board
@@ -256,7 +262,7 @@ def judicial_cases_board():
 
     # 构建最终结果
     res = {
-        "judicial_cases_board": judicial_cases_board
+        "judicial_cases_board": judicial_cases_board,
     }
         
     return success_response(res)
