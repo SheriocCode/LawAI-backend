@@ -50,6 +50,8 @@ def search():
                     "doc_id": int(item[0])+1,
                     "index": idx,
                     "title": metadata[item[0]]['案例'],
+                    "keywords": metadata[item[0]]['关键词'],
+                    "judgment_short": metadata[item[0]]['基本案情'],
                     "doc_type": "JUDICIAL_CASES", 
                     "score": float(item[1]),
                 } for idx, item in enumerate(results)
