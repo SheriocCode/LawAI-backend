@@ -4,7 +4,7 @@ import traceback
 from extension import db
 from model.ai import ApiSession, Question, WebSearchResult, RAGResult, Session
 from model.user import User, Collect
-from model.law import JudicalCase, JudgmentDocument
+from model.law import JudicalCase, JudgmentDocument, Law
 from model.uploads import UploadFile, UploadPic
 
 """注册用户"""
@@ -327,12 +327,12 @@ def get_collect_laws(user_id):
     collect_list = []
     # 获取对应的法律文书
     for idx, collect_law in enumerate(collect_laws):
-        law = JudicalCase.query.get(collect_law.doc_id)
+        law = Law.query.get(collect_law.doc_id)
         collect_list.append({
             "doc_id": law.id,
             "index": idx,
             "title": law.title,
-            "law_category": law.category,
+            "law_category": law.law_category,
             "doc_type": "LAWS",
             "collect_date": collect_law.collect_date.strftime("%Y-%m-%d")
         })
@@ -345,7 +345,7 @@ def get_collect_cases(user_id):
     collect_cases = Collect.query.filter_by(user_id=user_id, doc_type='JUDICIAL_CASES').limit(10).all()
 
     collect_list = []
-    # 获取对应的法律文书
+    # 获取对应的案例
     for idx, collect_case in enumerate(collect_cases):
         case = JudicalCase.query.get(collect_case.doc_id)
         collect_list.append({
@@ -361,8 +361,8 @@ def get_collect_cases(user_id):
 
 # 获取用户收藏-裁判文书
 def get_collect_docs(user_id):
-    collect_docs_count = Collect.query.filter_by(user_id=user_id, doc_type='JUDGMENT_DOCS').count()
-    collect_docs = Collect.query.filter_by(user_id=user_id, doc_type='JUDGMENT_DOCS').limit(10).all()
+    collect_docs_count = Collect.query.filter_by(user_id=user_id, doc_type='JUDGMENT_DOCUMENTS').count()
+    collect_docs = Collect.query.filter_by(user_id=user_id, doc_type='JUDGMENT_DOCUMENTS').limit(10).all()
 
     collect_list = []
     # 获取对应的法律文书
@@ -373,7 +373,7 @@ def get_collect_docs(user_id):
             "index": idx,
             "title": doc.title,
             "cause": doc.cause.split('、') if doc.cause else [],
-            "doc_type": "JUDGMENT_DOCS",
+            "doc_type": "JUDGMENT_DOCUMENTS",
             "collect_date": collect_doc.collect_date.strftime("%Y-%m-%d")
         })
 

@@ -25,17 +25,17 @@ class JudgmentDocument(db.Model):
     judgment_date = db.Column(db.Text, nullable=True) # 裁判日期
     client = db.Column(db.Text, nullable=True) # 当事人
     law_basis = db.Column(db.Text, nullable=True) # 法律依据
-    category = db.Column(db.Text, nullable=True) # 类别
+    category = db.Column(db.Text, nullable=True) # 类别(民事判决书)
     decision_num = db.Column(db.Text, nullable=True) # 判决依据
     details = db.Column(db.Text, nullable=True) # 判决内容
 
 
 
 # 法律法规
-# class Law(db.Model):
-#     __tablename__ = "laws"
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     title = db.Column(db.String(255), nullable=False)
-#     content = db.Column(db.Text, nullable=False)
-#     category = db.Column(db.Text, nullable=True) # 类别(宪法及相关法)
+class Law(db.Model):
+    __tablename__ = "laws"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(255), nullable=False) # 法律名称（宪法）
+    # content = db.Column(db.Text, nullable=False)
+    law_category = db.Column(db.Text, nullable=True) # 法律类别(宪法及相关法)
 
