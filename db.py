@@ -227,6 +227,18 @@ def get_judgment_document_by_id(id):
     else:
         return False, "Judgment document not found"
     
+# 获取id裁判文书的相关判决
+def get_related_judgment(id):
+    # 获取民事判决5条,从id为115开始
+    civil_judgment = JudgmentDocument.query.filter(JudgmentDocument.document_type == '民事案件', JudgmentDocument.id >= 115).limit(5).all()
+    # 获取刑事判决5条
+    criminal_judgment = JudgmentDocument.query.filter(JudgmentDocument.document_type == '刑事案件', JudgmentDocument.id!= id).limit(5).all()
+
+    judgments = [civil_judgment, criminal_judgment]
+
+    return True, judgments
+
+
 # 法律法规页面
 def get_legal_rules_board():
     pass

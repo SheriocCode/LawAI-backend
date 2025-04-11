@@ -5,7 +5,7 @@ from utils.result import error_response, success_response
 from utils.jwt import generate_token, token_required
 from db import get_judicial_case_by_id, get_judgment_document_by_id, get_legal_rules_board, get_judicial_direction_cases_board, get_judicial_reference_cases_board
 from db import get_judgement_count, get_judgement_docs_board
-from db import get_hot_cases, get_docs_recommend
+from db import get_hot_cases, get_docs_recommend, get_related_judgment
 from db import get_collect_dashboard, get_collect_laws, get_collect_cases, get_collect_docs
 
 from algo.search import find_similar_cases
@@ -146,15 +146,31 @@ def get_judgment_document(id):
 
 # 获取id裁判文书相关判决
 @law_bp.route('/related_judgment', methods=['GET'])
-def get_related_judgment():
+def related_judgment():
     # 获取查询参数
     query_params = request.args.to_dict()
-    judgment_documnet_id = query_params.get('judgment_documnet_id')
-    console.print('[green]judgment_documnet_id:[/green]', judgment_documnet_id)
+    judgment_document_id = query_params.get('judgment_document_id')
+    console.print('[green]judgment_document_id:[/green]', judgment_document_id)
 
     # TODO: 获取相关判决
+    success, judgments = get_related_judgment(judgment_document_id)
+    if not success:
+        return error_response(judgments)
 
-    return success_response('success')
+    res = {
+        "count": 10,  
+        "related_judgment": [
+            {
+                "doc_id": item.id,
+                "title": item.title,
+                "doc_type": "JUDGMENT_DOCUMENT",
+                "trial_procedure": item.trial_procedure,
+                "cause": item.cause.split('、') if item.cause else [],
+            } for judgment in judgments for  item in judgment
+        ]
+    }
+
+    return success_response(res)
 
 
 # 获取热门案例
