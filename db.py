@@ -219,6 +219,15 @@ def get_hot_cases():
     hot_cases = JudicalCase.query.filter(JudicalCase.id >= 301, JudicalCase.id <= 310).all()
     return True, hot_cases
 
+# 用户推荐-猜您想看
+def get_interest():
+    # 随机获取judical_case表中5个案例
+    case_interest = JudicalCase.query.order_by(db.func.random()).limit(5).all()
+    # 随机获取judgment_document表中5个案例
+    document_interest = JudgmentDocument.query.order_by(db.func.random()).limit(5).all()
+
+    return True, case_interest, document_interest
+
 # 根据id获取裁判文书具体信息
 def get_judgment_document_by_id(id):
     judgment_document = JudgmentDocument.query.get(id)
@@ -229,6 +238,8 @@ def get_judgment_document_by_id(id):
     
 # 获取id裁判文书的相关判决
 def get_related_judgment(id):
+    # TODO：相关判决获取方式
+
     # 获取民事判决5条,从id为115开始
     civil_judgment = JudgmentDocument.query.filter(JudgmentDocument.document_type == '民事案件', JudgmentDocument.id >= 115).limit(5).all()
     # 获取刑事判决5条
@@ -237,11 +248,6 @@ def get_related_judgment(id):
     judgments = [civil_judgment, criminal_judgment]
 
     return True, judgments
-
-
-# 法律法规页面
-def get_legal_rules_board():
-    pass
 
 
 # 司法案例页面-获取指导性案例
