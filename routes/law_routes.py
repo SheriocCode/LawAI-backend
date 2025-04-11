@@ -11,7 +11,8 @@ from db import get_collect_dashboard, get_collect_laws, get_collect_cases, get_c
 
 from algo.search import find_similar_cases
 
-from extension import console, model, embeddings, metadata
+from extension import console
+from extension import model, embeddings, metadata
 
 law_bp = Blueprint('law', __name__)
 
