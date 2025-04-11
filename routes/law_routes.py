@@ -5,7 +5,7 @@ from utils.result import error_response, success_response
 from utils.jwt import generate_token, token_required
 from db import get_judicial_case_by_id, get_judgment_document_by_id, get_legal_rules_board, get_judicial_direction_cases_board, get_judicial_reference_cases_board
 from db import get_judgement_count, get_judgement_docs_board
-from db import get_docs_recommend
+from db import get_hot_cases, get_docs_recommend
 from db import get_collect_dashboard, get_collect_laws, get_collect_cases, get_collect_docs
 
 from algo.search import find_similar_cases
@@ -155,6 +155,30 @@ def get_related_judgment():
     # TODO: 获取相关判决
 
     return success_response('success')
+
+
+# 获取热门案例
+@law_bp.route('/hot_cases', methods=['GET'])
+def hot_cases():
+    # TODO: 热门案例获取
+
+    success, hot_cases = get_hot_cases()
+    if not success:
+        return error_response(hot_cases)
+
+    res = {
+        "count": len(hot_cases), 
+        "items": [
+            {
+                "doc_id": item.id, 
+                "index": idx,
+                "title": item.title,
+                "keywords": item.keywords.split(' '),
+            } for idx, item in enumerate(hot_cases)
+        ]
+    }
+
+    return success_response(res)
 
 
 # 获取用户个性化推荐

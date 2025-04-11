@@ -213,6 +213,12 @@ def get_judicial_case_by_id(id):
     else:
         return False, "Judicial case not found"
 
+# 案例具体页-获取热门案例
+def get_hot_cases():
+    # 获取judical_case表中id从301-310的案例
+    hot_cases = JudicalCase.query.filter(JudicalCase.id >= 301, JudicalCase.id <= 310).all()
+    return True, hot_cases
+
 # 根据id获取裁判文书具体信息
 def get_judgment_document_by_id(id):
     judgment_document = JudgmentDocument.query.get(id)
