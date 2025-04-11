@@ -7,4 +7,4 @@ def init_db(app):
         db.create_all()
 
 def cors(app):
-    CORS(app, resources={r"/*": {"origins": "*"}})
+    CORS(app, resources={r"/*": {"origins": "http://localhost:5173", "supports_credentials": True}})
