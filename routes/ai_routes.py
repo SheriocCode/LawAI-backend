@@ -13,7 +13,7 @@ from utils.result import error_response, success_response
 from utils.jwt import generate_token, token_required
 from utils.upload import file_uploader
 
-from db import add_pic_file, add_question_answer, add_question_summary, add_upload_file, create_apisession, create_session, add_question_to_session, get_apisession, get_question_by_id
+from db import add_pic_file, add_question_answer, add_question_summary, add_upload_file, create_apisession, create_session, add_question_to_session, get_apisession, get_question_by_id, get_answer_by_question_id
 from db import add_web_search_result, get_retrieve_data
 
 ai_bp = Blueprint('ai', __name__)
@@ -74,11 +74,11 @@ def new_chat():
 
 @ai_bp.route("/ai/new_question_id", methods=["POST"])
 def new_question_id():
-    session_id = request.cookies.get('session_id')
+    data = request.json
+    session_id = data.get("session_id")
     if not session_id:
         return error_response("Session ID not found")
 
-    data = request.json
     content = {
         "user_question": data.get("user_question"),
         "ocr_msg": data.get("ocr_msg")
@@ -162,11 +162,11 @@ def upload_pic():
 
 @ai_bp.route("/ai/web_search", methods=["POST"])
 def web_search():
-    session_id = request.cookies.get('session_id')
+    data = request.json
+    session_id = data.get("session_id")
     if not session_id:
         return error_response("Session ID not found")
     
-    data = request.json
     question_id = data.get("question_id")
     success, msg = get_question_by_id(question_id)
 
@@ -212,11 +212,11 @@ def web_search():
 
 @ai_bp.route("/ai/rag_search", methods=["POST"])
 def rag_search():
-    session_id = request.cookies.get('session_id')
+    data = request.json
+    session_id = data.get("session_id")
     if not session_id:
         return error_response("Session ID not found")
 
-    data = request.json
     question_id = data.get("question_id")
     success, msg = get_question_by_id(question_id)
 
@@ -229,11 +229,11 @@ def rag_search():
 
 @ai_bp.route("/ai/stream_chat", methods=["POST"])
 def stream_chat():
-    session_id = request.cookies.get('session_id')
+    data = request.json
+    session_id = data.get("session_id")
     if not session_id:
         return error_response("Session ID not found")
 
-    data = request.json
     question_id = data.get("question_id")
     success, msg = get_question_by_id(question_id)
     if not success:
@@ -321,7 +321,7 @@ def stream_chat():
 
         # TODO: 结果入库
         console.print(f'\n[blue]@stream_chat - save to db(add_question_answer)[/blue]')
-        # add_question_answer(question_id, full_response)
+        add_question_answer(question_id, full_response)
         api_session_id = response.output.session_id
         create_apisession(session_id, api_session_id)
 
@@ -329,11 +329,11 @@ def stream_chat():
 
 @ai_bp.route("/ai/recommend", methods=["POST"])
 def recommend():
-    session_id = request.cookies.get('session_id')
+    data = request.json
+    session_id = data.get("session_id")
     if not session_id:
         return error_response("Session ID not found")
 
-    data = request.json
     question_id = data.get("question_id")
     success, msg = get_question_by_id(question_id)
     if not success:
