@@ -345,15 +345,15 @@ def judicial_cases_board():
 @law_bp.route('/judgement_docs', methods=['GET'])
 def judgement_docs_board():
     # 获取裁判文书总数量
-    success, judgement_count = get_judgement_count()
+    judgement_count = get_judgement_count()
     # 获取裁判文书数据
     success, criminal_judgement_docs, civil_judgement_docs, administrative_judgement_docs = get_judgement_docs_board()
 
     # 定义map数据
     categories = [
-        {"title": "刑事", "judgement_docs": criminal_judgement_docs},
-        {"title": "民事", "judgement_docs": civil_judgement_docs},
-        {"title": "行政", "judgement_docs": administrative_judgement_docs}
+        {"title": "刑事", "judgement_docs": criminal_judgement_docs, "count": get_judgement_count('刑事')},
+        {"title": "民事", "judgement_docs": civil_judgement_docs, "count": get_judgement_count('民事')},
+        {"title": "行政", "judgement_docs": administrative_judgement_docs, "count": get_judgement_count('行政')}
     ]
 
     # 使用 map 函数动态生成 judgement_docs_board
@@ -361,7 +361,7 @@ def judgement_docs_board():
         return {
             "index": index + 1, 
             "title": category["title"],
-            "count": len(category["judgement_docs"]),
+            "count": category["count"],
             "items": [
                 {
                     "index": idx,

@@ -318,9 +318,16 @@ def get_judicial_reference_cases_board():
 
 
 # 裁判文书页面-获取count
-def get_judgement_count():
-    count = JudgmentDocument.query.count()
-    return True, count
+def get_judgement_count(doc_type=None):
+    if doc_type == '刑事':
+        count = JudgmentDocument.query.filter(JudgmentDocument.document_type.like('%刑事%')).count()
+    elif doc_type == '民事':
+        count = JudgmentDocument.query.filter(JudgmentDocument.document_type.like('%民事%')).count()
+    elif doc_type == '行政':
+        count = JudgmentDocument.query.filter(JudgmentDocument.trial_procedure.like('%行政%')).count()
+    else:
+        count = JudgmentDocument.query.count()
+    return count
 
 # 裁判文书页面
 def get_judgement_docs_board():
