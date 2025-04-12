@@ -370,7 +370,7 @@ def judgement_docs_board():
                     "cause": doc.cause.split('、') if doc.cause else [],
                     "trial_procedure": doc.trial_procedure,
                     "judgment_date": doc.judgment_date,
-                    "doc_type": "JUDGMENT_DOCS"
+                    "doc_type": "JUDGMENT_DOCUMENTS"
                 } for idx, doc in enumerate(category["judgement_docs"])
             ]
         }
