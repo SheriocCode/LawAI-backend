@@ -1,6 +1,7 @@
 from flask import Blueprint, Response, request, current_app, stream_with_context
 import uuid
 import json
+import re
 from http import HTTPStatus
 import requests
 
@@ -201,14 +202,42 @@ def web_search():
         timeout=300
     )
 
+    print(resp)
+    print(resp.content.decode())
+
     search_res = json.loads(resp.content.decode())["choices"][0]["message"]["tool_calls"][1]["search_result"]
+
+    web_search_items = []
+    for item in search_res:
+        title = item.get("title", "网络搜索结果")
+        content = item.get("content", "")
+        link = item.get("link", "")
+        icon = item.get("icon", "https://cmarket-1326491424.cos.ap-shanghai.myqcloud.com/04fda82c8fd344a19ffc42cbfc2c61aa.png")
+        media = item.get("media", "")
+        
+        # 使用正则表达式提取发布时间
+        match = re.search(r"\d{4}-\d{2}-\d{2}", title)
+        if match:
+            refer = match.group()  # 提取匹配到的发布时间
+        else:
+            refer = ""  # 如果没有匹配到发布时间，使用默认值
+
+        web_search_items.append({
+            "title": title, 
+            "content": content,
+            "link": link,
+            "icon": icon,
+            "media": media,
+            "refer": refer
+        })
+
 
     # 搜索结果入库
     console.print(f'[blue]@web_search - save to db [/blue]')
     # TODO: 整理搜索结果，保留关键信息
     add_web_search_result(question_id, str(search_res))
 
-    return success_response({"type": "web_search_result", "web_search_items": search_res})
+    return success_response({"type": "web_search_result", "web_search_items": web_search_items})
 
 @ai_bp.route("/ai/rag_search", methods=["POST"])
 def rag_search():
