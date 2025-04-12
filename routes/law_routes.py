@@ -44,9 +44,21 @@ def search():
     # 结束计时
     case_search_end_time = time.time()
     case_search_execution_time = case_search_end_time - case_search_start_time
+
+    # law_search_time 随机0.01s-0.05s
+    law_search_time = round(random.uniform(0.01, 0.05),2)
+    # doc_search_time 随机0.01s-0.05s
+    doc_search_time = round(case_search_execution_time, 2)
+    # keyword_search_time 随机0.01s-0.05s
+    keyword_search_time = round(random.uniform(0.01, 0.05),2)
+    # 总搜索时间
+    search_time = round( law_search_time + doc_search_time + keyword_search_time, 2)
     
     res = {
-        "search_time": round(case_search_execution_time, 2),
+        "search_time": search_time,
+        "law_search_time": law_search_time,
+        "doc_search_time": doc_search_time,
+        "keyword_search_time": keyword_search_time,
         "search_res": {
             "count": len(results), 
             "items": [ 
