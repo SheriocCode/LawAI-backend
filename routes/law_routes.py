@@ -370,7 +370,7 @@ def judgement_docs_board():
                     "cause": doc.cause.split('、') if doc.cause else [],
                     "trial_procedure": doc.trial_procedure,
                     "judgment_date": doc.judgment_date,
-                    "doc_type": "JUDGMENT_DOCUMENTS"
+                    "doc_type": "JUDGMENT_DOCUMENT"
                 } for idx, doc in enumerate(category["judgement_docs"])
             ]
         }
@@ -431,7 +431,7 @@ def docs_recommend():
                     "cause": item.cause.split('、') if item.cause else [],
                     "trial_procedure": item.trial_procedure,
                     "judgment_date": item.judgment_date,
-                    "doc_type": "JUDGMENT_DOCUMENTS",
+                    "doc_type": "JUDGMENT_DOCUMENT",
                     # 随机选择一个理由
                     "recommend_reason": random.choice(reasons)
                 } for idx, item in enumerate(recommend_docs)
