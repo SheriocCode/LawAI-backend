@@ -339,6 +339,18 @@ def get_docs_recommend():
     # TODO： 基于用户行为获取案例文书推荐
     pass
 
+# 法律知识图谱-案例知识图谱
+def get_case_knowledge_graph(keyword):
+    # 查询匹配的案例
+    results = JudicalCase.query.filter(
+        (JudicalCase.title.ilike(f'%{keyword}%')) |
+        (JudicalCase.keywords.ilike(f'%{keyword}%')) |
+        (JudicalCase.related_laws.ilike(f'%{keyword}%'))
+    ).limit(20).all()
+
+    return True, results
+
+
 # 获取用户收藏统计
 def get_collect_dashboard(user_id):
     # 获取用户收藏法律文书统计

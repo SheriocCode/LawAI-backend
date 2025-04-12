@@ -8,6 +8,7 @@ from db import get_judgement_count, get_judgement_docs_board
 from db import get_hot_cases, get_interest, get_related_judgment
 from db import get_docs_recommend
 from db import get_collect_dashboard, get_collect_laws, get_collect_cases, get_collect_docs
+from db import get_case_knowledge_graph
 
 from algo.search import find_similar_cases
 
@@ -488,3 +489,27 @@ def court_map():
             })
 
     return success_response(processed_data)
+
+# 法律知识图谱-案例知识图谱
+@law_bp.route('/graph/case_knowledge_graph', methods=['GET'])
+def case_knowledge_graph():
+    keyword = request.args.get('keyword', '').lower()
+    if not keyword:
+        return error_response('请输入关键词')
+    
+    success, graph_data = get_case_knowledge_graph(keyword)
+    if not success:
+        return error_response(graph_data)
+
+
+    # 将查询结果转换为 JSON 格式
+    matched_data = []
+    for result in graph_data:
+        matched_data.append({
+            '案例': result.title,
+            '关键词': result.keywords.split(' ') if result.keywords else [],
+            '关联索引': [result.related_laws.split('&&') if result.related_laws else []]
+        })
+
+    # return jsonify(matched_data)
+    return success_response(matched_data)
