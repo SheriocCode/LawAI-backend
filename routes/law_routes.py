@@ -127,7 +127,7 @@ def get_judgment_document(id):
 
     res = {
         "title": msg.title,
-        "basic_infomation": {
+        "basic_information": {
             "trial_court": msg.trial_court,
             "trial_procedure": msg.trial_procedure,
             "type": msg.document_type,
