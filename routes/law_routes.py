@@ -310,7 +310,8 @@ def judicial_cases_board():
                         "doc_id": case.id,
                         "index": idx,
                         "title": case.title,
-                        "doc_type": "JUDICIAL_CASES"
+                        "doc_type": "JUDICIAL_CASES",
+                        "keywords": case.keywords.split(' ')
                     } for idx, case in enumerate(category["direction_cases"])
                 ]
             },
@@ -321,7 +322,8 @@ def judicial_cases_board():
                         "doc_id": case.id,
                         "index": idx,
                         "title": case.title,
-                        "doc_type": "JUDICIAL_CASES"
+                        "doc_type": "JUDICIAL_CASES",
+                        "keywords": case.keywords.split(' ')
                     } for idx, case in enumerate(category["reference_cases"])
                 ]
             },
