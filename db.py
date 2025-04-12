@@ -329,7 +329,8 @@ def get_judgement_docs_board():
     # 获取关键词中包含 “民事” 的判决书
     civil_judgement_docs = JudgmentDocument.query.filter(JudgmentDocument.document_type.like('%民事%')).limit(15).all()
     # 获取关键词中包含 “行政” 的判决书
-    administrative_judgement_docs = JudgmentDocument.query.filter(JudgmentDocument.document_type.like('%行政%')).limit(15).all()
+    # TODO:行政判决书数据量不足，格式不统一
+    administrative_judgement_docs = JudgmentDocument.query.filter(JudgmentDocument.trial_procedure.like('%行政%')).limit(10).all()
     # TODO: 获取其他类型判决书
 
     return True, criminal_judgement_docs, civil_judgement_docs, administrative_judgement_docs
