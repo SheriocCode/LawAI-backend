@@ -1,6 +1,7 @@
 from flask import Blueprint, request
 import time
 import json
+import random
 from utils.result import error_response, success_response
 from utils.jwt import generate_token, token_required
 from db import get_judicial_case_by_id, get_judgment_document_by_id, get_judicial_direction_cases_board, get_judicial_reference_cases_board
@@ -399,8 +400,72 @@ def judgement_docs_board():
 @token_required
 def docs_recommend():
     # TODO： 基于用户行为获取案例文书推荐
-    get_docs_recommend()
-    pass
+    success, recommend_cases, recommend_docs, recommend_laws, recommend_litigations = get_docs_recommend()
+    if not success:
+        return error_response(recommend_cases)
+    
+    reasons = [
+        "最近浏览相关主题",
+        "AI对话中的相关主题",
+        "偏好推荐",
+        "协同过滤推荐",
+        "内容的推荐",
+        "基于用户行为的推荐",
+        "热门司法案例推荐",
+        "司法数据趋势分析结果",
+        "与当前案件相似的案例推荐",
+        "根据用户历史查询记录推荐",
+        "司法领域专家推荐",
+        "基于司法数据挖掘的结果",
+        "结合法律条文的推荐"
+    ]
+
+    res = {
+        "document_recommend": {
+            "count": len(recommend_docs),
+            "items": [
+                {
+                    "doc_id": item.id,
+                    "index": idx,
+                    "title": item.title,
+                    "cause": item.cause.split('、') if item.cause else [],
+                    "trial_procedure": item.trial_procedure,
+                    "judgment_date": item.judgment_date,
+                    "doc_type": "JUDGMENT_DOCUMENTS",
+                    # 随机选择一个理由
+                    "recommend_reason": random.choice(reasons)
+                } for idx, item in enumerate(recommend_docs)
+            ]
+        },
+        "law_recommend":{
+            "count": len(recommend_laws),
+            "items": [
+                {
+                    "doc_id": item.id,
+                    "index": idx,
+                    "title": item.title,
+                    "law_category": item.law_category,
+                    "doc_type": "LAWS",
+                    "recommend_reason": random.choice(reasons)
+                } for idx, item in enumerate(recommend_laws)
+            ]
+        },
+        "guides_recommend":{
+            "count": len(recommend_litigations),
+            "items": [
+                {
+                    "doc_id": item.id,
+                    "index": idx,
+                    "title": item.title,
+                    "publisher": item.publisher,
+                    "doc_type": "LITIGATION_GUIDES",
+                    "recommend_reason": random.choice(reasons)
+                } for idx, item in enumerate(recommend_litigations)
+            ]
+        }
+    }
+
+    return success_response(res)
 
 
 # 获取用户收藏统计

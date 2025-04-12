@@ -39,3 +39,13 @@ class Law(db.Model):
     # content = db.Column(db.Text, nullable=False)
     law_category = db.Column(db.Text, nullable=True) # 法律类别(宪法及相关法)
 
+# 诉讼文书
+class LitigationDocument(db.Model):
+    __tablename__ = "litigation_documents"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(255), nullable=False) # 诉讼文书
+    # 发布单位
+    publisher = db.Column(db.String(255), nullable=True) # 发布单位
+
+
+

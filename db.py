@@ -4,7 +4,7 @@ import traceback
 from extension import db
 from model.ai import ApiSession, Question, WebSearchResult, RAGResult, Session
 from model.user import User, Collect, UserSession
-from model.law import JudicalCase, JudgmentDocument, Law
+from model.law import JudicalCase, JudgmentDocument, Law, LitigationDocument
 from model.uploads import UploadFile, UploadPic
 
 """注册用户"""
@@ -337,8 +337,19 @@ def get_judgement_docs_board():
 # 案例文书推荐
 def get_docs_recommend():
     # TODO： 基于用户行为获取案例文书推荐
-    pass
+    # 随机获取案例15个
+    case_judgement_docs = JudicalCase.query.order_by(db.func.random()).limit(15).all()
+    # 随机获取裁判文书15个
+    document_judgement_docs = JudgmentDocument.query.order_by(db.func.random()).limit(15).all()
+    # 随机获取法律文书15个
+    law_judgement_docs = Law.query.order_by(db.func.random()).limit(15).all()
+    # 获取诉讼文书15个
+    litigation_judgement_docs = LitigationDocument.query.order_by(db.func.random()).limit(15).all()
 
+    return True, case_judgement_docs, document_judgement_docs, law_judgement_docs, litigation_judgement_docs
+    
+    
+    
 # 法律知识图谱-案例知识图谱
 def get_case_knowledge_graph(keyword):
     # 查询匹配的案例
