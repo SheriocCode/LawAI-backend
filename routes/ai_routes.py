@@ -390,3 +390,36 @@ def recommend():
     console.print(f'[blue]@recommend - recommend result: [/blue]{json.loads(content)}')
 
     return success_response({"recommend_items": json.loads(content)})
+
+
+@ai_bp.route("/ai/title_refresh", methods=["POST"])
+def title_refresh():
+    data = request.json
+    session_id = data.get("session_id")
+    if not session_id:
+        return error_response("Session ID not found")
+
+    question_id = data.get("question_id")
+    success, msg = get_question_by_id(question_id)
+    if not success:
+        return error_response(msg)
+    success, text = get_answer_by_question_id(question_id)
+
+    console.print(f'[blue]@title_refresh - start title_refresh[/blue] base_text: {text[:20]}...')
+
+    response = qwen_client.chat.completions.create(
+        model="qwen-max",
+        messages=[
+            {
+            "role": "system",
+            "content": "根据文本生成一个标题，标题不超过10个字。示例：合同法保障的是什么？"
+            },
+            {"role": "user", "content": f"text: {text}"}
+        ],
+    )
+    # 提取响应内容
+    content = response.choices[0].message.content if response.choices else "No response"
+
+    console.print(f'[blue]@title_refresh - title_refresh result: [/blue]{content}')
+    return success_response({"title": content})
+    
