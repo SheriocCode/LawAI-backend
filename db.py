@@ -3,7 +3,7 @@ from flask import current_app
 import traceback
 from extension import db
 from model.ai import ApiSession, Question, WebSearchResult, RAGResult, Session
-from model.user import User, Collect
+from model.user import User, Collect, UserSession
 from model.law import JudicalCase, JudgmentDocument, Law
 from model.uploads import UploadFile, UploadPic
 
@@ -40,6 +40,20 @@ def create_session(session_id):
     except Exception as e:
         db.session.rollback()
         return False, str(e)
+
+# 用户与session关联
+def associate_user_with_session(user_id, session_id):
+    # 用户与session关联表
+    try:
+        new_association = UserSession(user_id=user_id, session_id=session_id)
+        db.session.add(new_association)
+        db.session.commit()
+        return True, "Association created successfully"
+    except Exception as e:
+        db.session.rollback()
+        return False, str(e)
+
+
 
 def add_question_to_session(session_id, content):
     """向会话中添加问题"""
@@ -176,6 +190,28 @@ def get_apisession(session_id):
         return False, None
 
     return True, api_session.api_session_id
+
+# 添加session title
+def add_session_title(session_id, title):
+    session = Session.query.filter_by(session_id=session_id).first()
+    if not session:
+        return False, "Session not found"
+
+    session.title = title
+    db.session.commit()
+    return True, session.id
+
+# 获取用户历史AI会话
+def get_user_history_sessions(user_id):
+    # 获取用户的所有session_id
+    user_sessions = UserSession.query.filter_by(user_id=user_id).all()
+    # 查找每个session_id对应的session
+    sessions = []
+    for user_session in user_sessions:
+        session = Session.query.filter_by(session_id=user_session.session_id).first()
+        if session:
+            sessions.append(session)
+    return True, sessions
 
 # 用户上传文件(docx / pptx / xlsx)
 def add_upload_file(user_id, file_name, file_url):

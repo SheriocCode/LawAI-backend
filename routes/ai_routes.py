@@ -14,7 +14,8 @@ from utils.result import error_response, success_response
 from utils.jwt import generate_token, token_required
 from utils.upload import file_uploader
 
-from db import add_pic_file, add_question_answer, add_question_summary, add_upload_file, create_apisession, create_session, add_question_to_session, get_apisession, get_question_by_id, get_answer_by_question_id
+from db import add_pic_file, add_question_answer, add_question_summary, add_upload_file, create_apisession, create_session, associate_user_with_session, add_question_to_session, get_apisession, get_question_by_id, get_answer_by_question_id, get_user_history_sessions
+from db import add_session_title
 from db import add_web_search_result, get_retrieve_data
 
 ai_bp = Blueprint('ai', __name__)
@@ -69,9 +70,13 @@ def background_summary(question_id, full_response):
 def new_chat():
     session_id = uuid.uuid4().hex
     success, msg = create_session(session_id)
+    # 用户与session关联
+    user_id = request.user_id
+    success, msg = associate_user_with_session(user_id, session_id)
+
     if not success:
         return error_response(msg)
-    return success_response({"session_id": msg})
+    return success_response({"session_id": session_id})
 
 @ai_bp.route("/ai/new_question_id", methods=["POST"])
 def new_question_id():
@@ -391,7 +396,7 @@ def recommend():
 
     return success_response({"recommend_items": json.loads(content)})
 
-
+# 更新AI对话标题
 @ai_bp.route("/ai/title_refresh", methods=["POST"])
 def title_refresh():
     data = request.json
@@ -418,8 +423,36 @@ def title_refresh():
         ],
     )
     # 提取响应内容
-    content = response.choices[0].message.content if response.choices else "No response"
+    title = response.choices[0].message.content if response.choices else "No response"
 
-    console.print(f'[blue]@title_refresh - title_refresh result: [/blue]{content}')
-    return success_response({"title": content})
+    console.print(f'[blue]@title_refresh - title_refresh result: [/blue]{title}')
+    # 记录session title
+    success, msg = add_session_title(session_id, title)
+
+    return success_response({"title": title})
     
+
+# 历史记录页
+@ai_bp.route("/ai/chat_history", methods=["GET"])
+@token_required
+def chat_history():
+    user_id = request.user_id
+    # 获取用户全部历史记录
+    success, sessions = get_user_history_sessions(user_id)
+    if not success:
+        return error_response(sessions)
+    # 整理返回数据
+    history_items = []
+    for session in sessions:
+        history_items.append({
+            "session_id": session.session_id,
+            "title": session.title,
+            "time": session.created_at.strftime("%Y-%m-%d"),
+
+        })
+
+    res = {
+        "count": len(history_items),
+        "historyItems": history_items
+    }
+    return success_response(res)

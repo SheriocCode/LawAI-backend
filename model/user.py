@@ -23,3 +23,9 @@ class Collect(db.Model):
     doc_id = db.Column(db.Integer, nullable=False)
     doc_type = db.Column(db.String(50), nullable=False)
     collect_date = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
+
+class UserSession(db.Model):
+    __tablename__ = "user_sessions"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    session_id = db.Column(db.String(100), nullable=False)

@@ -13,6 +13,7 @@ class Session(db.Model):
     __tablename__ = "sessions"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     session_id = db.Column(db.String(32), unique=True, nullable=False)
+    title = db.Column(db.String(100), nullable=True)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now(timezone.utc))
 
 class Question(db.Model):
