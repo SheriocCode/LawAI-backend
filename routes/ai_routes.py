@@ -185,7 +185,7 @@ def web_search():
     console.print(f'[blue]@web_search - extract keywords[/blue]')
     keywords = extract_search_keywords(user_question)
     if not keywords:
-        return error_response("No need to search")
+        return success_response({"type": "web_search_result", "web_search_items": []})
     
 
     # 调用zhipu API 进行搜索
